@@ -1,0 +1,76 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global helper: Validate document path variables against ID poisoning & injection
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-\\.]+$');
+    }
+
+    // Catch-all default deny for any unmapped paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Products: public read for online customer catalog, verified ID writes
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isValidId(productId);
+    }
+
+    // Categories: public read for online customer catalog, verified ID writes
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isValidId(categoryId);
+    }
+
+    // Materials: inventory and cost management sync
+    match /materials/{materialId} {
+      allow read: if true;
+      allow write: if isValidId(materialId);
+    }
+
+    // Invisible overhead costs
+    match /invisibleCosts/{costId} {
+      allow read: if true;
+      allow write: if isValidId(costId);
+    }
+
+    // Orders: customer purchase orders & status tracking
+    match /orders/{orderId} {
+      allow read: if true;
+      allow write: if isValidId(orderId);
+    }
+
+    // Financial ledger transactions
+    match /transactions/{transactionId} {
+      allow read: if true;
+      allow write: if isValidId(transactionId);
+    }
+
+    // Clients and contacts
+    match /clients/{clientId} {
+      allow read: if true;
+      allow write: if isValidId(clientId);
+    }
+
+    // Suppliers directory
+    match /suppliers/{supplierId} {
+      allow read: if true;
+      allow write: if isValidId(supplierId);
+    }
+
+    // Store settings (storeSettings, systemState)
+    match /settings/{settingId} {
+      allow read: if true;
+      allow create, update: if isValidId(settingId);
+      allow delete: if isValidId(settingId) && settingId != 'systemState';
+    }
+
+    // Connection health test
+    match /test/{testId} {
+      allow read: if true;
+      allow write: if isValidId(testId);
+    }
+  }
+}
