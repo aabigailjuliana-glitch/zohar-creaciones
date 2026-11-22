@@ -1,0 +1,232 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Product catalog item with materials, pricing, discounts and categories",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "sku": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "subcategory": { "type": "string" },
+        "description": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "images": { "type": "array" },
+        "variants": { "type": "array" },
+        "stock": { "type": "number" },
+        "minStock": { "type": "number" },
+        "productionMinutes": { "type": "number" },
+        "extraDirectCost": { "type": "number" },
+        "profitMarginPercent": { "type": "number" },
+        "manualPriceOverride": { "type": "number" },
+        "discountType": { "type": "string", "enum": ["percentage", "fixed"] },
+        "discountValue": { "type": "number" },
+        "activeInCatalog": { "type": "boolean" },
+        "featuredInCatalog": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "category"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Product category and list of subcategories",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "subcategories": {
+          "type": "array"
+        }
+      },
+      "required": ["id", "name"]
+    },
+    "Material": {
+      "title": "Material",
+      "description": "Raw material used in product calculations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "unit": { "type": "string" },
+        "unitPrice": { "type": "number" },
+        "wholesalePrice": { "type": "number" },
+        "wholesaleMinQty": { "type": "number" },
+        "supplierId": { "type": "string" },
+        "stock": { "type": "number" },
+        "notes": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "unitPrice"]
+    },
+    "InvisibleCost": {
+      "title": "InvisibleCost",
+      "description": "Fixed monthly business overhead expense",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "monthlyCost": { "type": "number" },
+        "notes": { "type": "string" }
+      },
+      "required": ["id", "name", "monthlyCost"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer order details, status, delivery and payment tracking",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "orderNumber": { "type": "string" },
+        "clientId": { "type": "string" },
+        "clientName": { "type": "string" },
+        "clientPhone": { "type": "string" },
+        "clientEmail": { "type": "string" },
+        "clientDni": { "type": "string" },
+        "clientAddress": { "type": "string" },
+        "postalCode": { "type": "string" },
+        "province": { "type": "string" },
+        "total": { "type": "number" },
+        "status": { "type": "string" },
+        "deliveryMethod": { "type": "string" },
+        "deliveryDescription": { "type": "string" },
+        "trackingNumber": { "type": "string" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "deliveryDate": { "type": "string" },
+        "invoiceNumber": { "type": "string" },
+        "accountId": { "type": "string" }
+      },
+      "required": ["id", "orderNumber", "clientName", "total", "status"]
+    },
+    "FinancialTransaction": {
+      "title": "FinancialTransaction",
+      "description": "Income or expense ledger record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["ingreso", "egreso"] },
+        "category": { "type": "string" },
+        "amount": { "type": "number" },
+        "date": { "type": "string" },
+        "description": { "type": "string" },
+        "method": { "type": "string" },
+        "orderId": { "type": "string" },
+        "accountId": { "type": "string" }
+      },
+      "required": ["id", "type", "amount", "date", "description"]
+    },
+    "Client": {
+      "title": "Client",
+      "description": "Customer profile and contact information",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "address": { "type": "string" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "phone"]
+    },
+    "Supplier": {
+      "title": "Supplier",
+      "description": "Supplier contact and details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "contactPerson": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "address": { "type": "string" },
+        "productsSupplied": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "required": ["id", "name"]
+    },
+    "AppSettings": {
+      "title": "AppSettings",
+      "description": "Global store settings, catalog customization and WhatsApp templates",
+      "type": "object",
+      "properties": {
+        "businessName": { "type": "string" },
+        "ownerEmail": { "type": "string" },
+        "ownerPhone": { "type": "string" },
+        "currency": { "type": "string" },
+        "hourlyLaborRate": { "type": "number" },
+        "monthlyWorkingHours": { "type": "number" },
+        "bankAlias": { "type": "string" },
+        "bankCbu": { "type": "string" },
+        "bankHolder": { "type": "string" },
+        "bankName": { "type": "string" },
+        "defaultPaymentMessage": { "type": "string" },
+        "defaultOrderMessage": { "type": "string" },
+        "darkMode": { "type": "boolean" },
+        "notificationsEnabled": { "type": "boolean" },
+        "catalogTitle": { "type": "string" },
+        "catalogTagline": { "type": "string" },
+        "catalogDescription": { "type": "string" },
+        "catalogDefaultSort": { "type": "string" },
+        "catalogGroupByCategory": { "type": "boolean" },
+        "businessLogoUrl": { "type": "string" },
+        "businessLogoFit": { "type": "string" },
+        "businessLogoBg": { "type": "string" },
+        "catalogHeaderLayout": { "type": "string" },
+        "catalogCoverUrl": { "type": "string" },
+        "catalogCoverFit": { "type": "string" },
+        "catalogCoverOverlay": { "type": "boolean" },
+        "savedVariantSuggestions": { "type": "array" },
+        "whatsappGreetingBuyer": { "type": "string" },
+        "whatsappGreetingSeller": { "type": "string" }
+      },
+      "required": ["businessName", "ownerPhone"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Catalog products with pricing and materials"
+    },
+    "/categories/{categoryId}": {
+      "schema": "Category",
+      "description": "Product category definitions"
+    },
+    "/materials/{materialId}": {
+      "schema": "Material",
+      "description": "Raw material stock and costs"
+    },
+    "/invisibleCosts/{costId}": {
+      "schema": "InvisibleCost",
+      "description": "Fixed monthly overhead costs"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Customer purchase orders"
+    },
+    "/transactions/{transactionId}": {
+      "schema": "FinancialTransaction",
+      "description": "Income and expense records"
+    },
+    "/clients/{clientId}": {
+      "schema": "Client",
+      "description": "Client directory"
+    },
+    "/suppliers/{supplierId}": {
+      "schema": "Supplier",
+      "description": "Supplier directory"
+    },
+    "/settings/{settingId}": {
+      "schema": "AppSettings",
+      "description": "Global application and store settings"
+    },
+    "/test/{testId}": {
+      "schema": { "$ref": "#/entities/AppSettings" },
+      "description": "Connection test document"
+    }
+  }
+}
